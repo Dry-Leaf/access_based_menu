@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello Page</title>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.slate.min.css"
+    >
+    <style>
+        input[type="text"], input[type="password"], input[type="submit"], select {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+    <h1><span th:text="${#strings.isEmpty(username) ? 'Not logged in' : 'Logged in as: ' + username}"></span></h1>
+
+    <form th:if="${#strings.isEmpty(username)}" action="/login" method="post">
+        <fieldset style="text-align: center;">
+          <input required 
+            type="text"
+            name="username"
+            placeholder="Username"
+            aria-label="Username"
+          />
+          <input required
+            type="Password"
+            name="password"
+            placeholder="Password"
+            aria-label="Password"
+          />
+          <input
+            type="submit"
+            value="Log in"
+          />
+          <select name="user_type" aria-label="Select" required>
+            <option>Normal</option>
+            <option>Admin</option>
+          </select>
+          <input
+            type="submit"
+            value="New Account"
+            formaction="/create_account"
+          />
+        </fieldset>
+    </form>
+
+
+    <form th:if="${!#strings.isEmpty(username)}" action="/logout" method="POST">
+        <fieldset style="text-align: center;">
+            <input
+            type="submit"
+            value="Logout"
+            />
+        </fieldset>
+    </form>
+
+
+    <div th:if="${user_type == 1}">
+        You are a normal user. To see another form, login with an admin account.
+    </div>
+
+    <form th:if="${user_type == 2}" action="/find_all" method="GET">
+        <fieldset style="text-align: center;">
+            <input
+            type="submit"
+            value="See All Users"
+            />
+        </fieldset>
+    </form>
+
+</body>
+</html>
